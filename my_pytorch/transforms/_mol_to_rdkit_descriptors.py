@@ -11,4 +11,5 @@ class MolToRDKitDescriptors:
 
 
 def mol_to_rdkit_descriptors(mol: Chem.Mol) -> np.array:
+    # TODO: Implement this function
     pass
