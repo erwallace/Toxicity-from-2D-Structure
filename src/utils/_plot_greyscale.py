@@ -12,5 +12,5 @@ def plot_greyscale(arr: np.array):
     """
     for i in range(arr.shape[0]):
         fig, ax = plt.subplots(figsize=(10, 5))
-        plt.imshow(arr[i, :], cmap='Greys')
+        plt.imshow(arr[i, :], cmap="Greys")
         plt.show()

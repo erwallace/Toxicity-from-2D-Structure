@@ -5,7 +5,6 @@ from typing import Any
 
 
 class MolToGreyscale:
-
     def __init__(self, embed: float = 20.0, res: float = 0.5):
         self.embed = embed
         self.res = res
@@ -42,7 +41,6 @@ def mol_to_greyscale(mol: Chem.Mol, embed: float = 20.0, res: float = 0.5) -> np
 
     # Bonds first
     for i, bond in enumerate(mol.GetBonds()):
-
         bondorder = bond.GetBondTypeAsDouble()
         bidx = bond.GetBeginAtomIdx()
         eidx = bond.GetEndAtomIdx()
@@ -51,7 +49,7 @@ def mol_to_greyscale(mol: Chem.Mol, embed: float = 20.0, res: float = 0.5) -> np
         frac = np.linspace(0, 1, int(1 / res * 2))
 
         for f in frac:
-            c = (f * bcoords + (1 - f) * ecoords)
+            c = f * bcoords + (1 - f) * ecoords
             idx = int(round((c[0] + embed) / res))
             idy = int(round((c[1] + embed) / res))
             vect[idx, idy, 0] = bondorder

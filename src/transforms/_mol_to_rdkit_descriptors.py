@@ -4,7 +4,6 @@ import numpy as np
 
 
 class MolToRDKitDescriptors:
-
     def __call__(self, sample: tuple[Chem.Mol, Any]) -> tuple[np.array, Any]:
         mol, toxicity = sample
         return mol_to_rdkit_descriptors(mol), toxicity
