@@ -27,14 +27,14 @@ def plot_greyscale(arr: np.array):
 
     assert arr.shape[-1] == 1, "The array must have only one channel."
 
-    if arr.dim() == 3:
+    if arr.ndim == 3:
         greyscale(arr)
 
-    elif arr.dim() == 4:
+    elif arr.ndim == 4:
         for i in range(arr.shape[0]):
             greyscale(arr[i, :])
 
     else:
         raise ValueError(
-            f"The array has {arr.dim()} dimensions ({arr.shape}). Must have 3 or 4."
+            f"The array has {arr.ndim} dimensions ({arr.shape}). Must have 3 or 4."
         )
