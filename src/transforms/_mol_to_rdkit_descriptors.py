@@ -1,3 +1,4 @@
+import torch
 from rdkit import Chem
 from typing import Any
 import numpy as np
@@ -9,4 +10,4 @@ class MolToRDKitDescriptors:
         mol, toxicity = sample
         funcs = [func for name, func in Descriptors.descList]
         desc = [func(mol) for func in funcs]
-        return desc, toxicity
+        return torch.Tensor(desc), toxicity

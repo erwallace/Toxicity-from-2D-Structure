@@ -1,3 +1,4 @@
+import torch
 from rdkit import Chem
 from src.transforms import MolToRDKitDescriptors
 
@@ -7,6 +8,5 @@ def test_MolToRDKitDescriptors():
     transformed = MolToRDKitDescriptors().__call__(sample)
 
     descriptors, toxicity = transformed
-    assert isinstance(descriptors, list)
+    assert isinstance(descriptors, torch.Tensor)
     assert len(descriptors) == len(Chem.Descriptors.descList)
-    assert all(isinstance(d, (float, int)) for d in descriptors)
