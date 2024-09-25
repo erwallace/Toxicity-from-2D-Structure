@@ -8,35 +8,51 @@ import torch
 class Tox21Tabular(Tox21Base):
     def __init__(self, csv_path, transform=None, target_transform=None):
         super().__init__(csv_path, transform, target_transform)
+        self.scaler = None
+        self.transformed_features = None
+        self.scaler_fit()
 
+    def __getitem__(self, idx: int) -> tuple:
+        features = self.data["smiles"].iloc[idx]
+        label = self.data[TOXICITIES].iloc[idx].values
+
+        if self.transform:
+            features = self.transform(features)
+        if self.target_transform:
+            label = self.target_transform(label)
+
+        features = self.scaler_transform(features)
+
+        return features, label
+
+    def scaler_fit(self):
+        """Fits the StandardScaler to the dataset.
+
+        To do this, we first apply the transformation to the entire dataset, remove any
+        nan rows that the transformations create and then fit the scaler to the
+        transformed data.
+        """
         # ToDo: is there a better way of doing this? even with only 7,000 datapoints its slow
-        # Apply transformations to the entire dataset if transform is provided
         if self.transform:
             transformed_smiles = [
                 self.transform(smile) for smile in self.data["smiles"]
             ]
-            self._features = torch.stack(transformed_smiles).numpy()
+            self.transformed_features = torch.stack(transformed_smiles).numpy()
         else:
-            self._features = self.data["smiles"].values
-        # Fit and transform the data using StandardScaler
-        nan_indices = np.where(np.isnan(self._features).any(axis=1))[0]
-        self.scaler = StandardScaler().fit(self._features[~nan_indices])
+            self.transformed_features = self.data["smiles"].values
 
-        # Remove any NaN rows that may have been introduced by the transform
-        print(f"Removing {len(nan_indices)} NaN rows from the dataset")
-        self.data = self.data.drop(nan_indices).reset_index(drop=True)
+        nan_idxs = np.where(np.isnan(self.transformed_features).any(axis=1))[0]
+        self.scaler = StandardScaler().fit(self.transformed_features[~nan_idxs])
 
-    def __getitem__(self, idx: int) -> tuple:
-        smile = self.data["smiles"].iloc[idx]
-        toxicity = self.data[TOXICITIES].iloc[idx].values
+        print(f"Removing {len(nan_idxs)} NaN rows from the dataset")
+        self.data = self.data.drop(nan_idxs).reset_index(drop=True)
 
-        if self.transform:
-            features = self.transform(smile)
-        if self.target_transform:
-            target = self.target_transform(toxicity)
-
+    def scaler_transform(self, features):
+        """Uses sklearn scaler to transform data. Must be called after scale_fit."""
+        if self.scaler is None:
+            raise ValueError("Scaler has not been fit. Please run scaler_fit() first.")
         features = self.scaler.transform(
             features.reshape(1, -1)
-        ).flatten()  # reshaped for a single sample
-
-        return (torch.Tensor(features), target)
+        )  # reshaped for a single sample
+        features = torch.Tensor(features.flatten())
+        return features
