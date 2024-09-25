@@ -1,0 +1,21 @@
+[project]
+name = "toxic2d"
+description = "Can you train a convolutional neural network to predict toxicity from just a 2D image of a molecule? Stay tuned to find out."
+version = "0.0.1"
+authors = ["Ewan Wallace"]
+dynamic = ["version", "readme"]
+requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.in"]}
+readme = {file = "README.md"}
+
+[tool.setuptools.dynamic.optional-dependencies]
+dev = {file = ["requirements-dev.in"]}
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ['tests']
