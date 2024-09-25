@@ -1,6 +1,6 @@
 import pandas as pd
 from torch.utils.data import Dataset
-from src.constants import TOXICITIES
+from toxic2d.constants import TOXICITIES
 
 
 class Tox21Base(Dataset):

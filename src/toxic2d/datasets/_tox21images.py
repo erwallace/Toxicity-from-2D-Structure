@@ -1,6 +1,6 @@
 from PIL import Image
 from torchvision import transforms
-from src.datasets import Tox21Base
+from toxic2d.datasets import Tox21Base
 
 
 class Tox21Images(Tox21Base):

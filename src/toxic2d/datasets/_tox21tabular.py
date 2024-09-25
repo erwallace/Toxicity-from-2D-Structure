@@ -1,6 +1,6 @@
 from sklearn.preprocessing import StandardScaler
-from src.datasets import Tox21Base
-from src.constants import TOXICITIES
+from toxic2d.datasets import Tox21Base
+from toxic2d.constants import TOXICITIES
 import numpy as np
 import torch
 

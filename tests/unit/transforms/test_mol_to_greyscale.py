@@ -1,5 +1,5 @@
-from src.transforms import MolToGreyscale
-from src.transforms._mol_to_greyscale import mol_to_greyscale
+from toxic2d.transforms import MolToGreyscale
+from toxic2d.transforms._mol_to_greyscale import mol_to_greyscale
 import numpy as np
 from rdkit import Chem
 

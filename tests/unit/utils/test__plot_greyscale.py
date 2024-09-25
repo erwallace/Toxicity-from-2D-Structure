@@ -1,6 +1,6 @@
 import pytest
 import numpy as np
-from src.utils import plot_greyscale
+from toxic2d.utils import plot_greyscale
 
 
 @pytest.mark.parametrize(

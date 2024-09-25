@@ -1,6 +1,6 @@
 import torch
 from rdkit import Chem
-from src.transforms import MolToRDKitDescriptors
+from toxic2d.transforms import MolToRDKitDescriptors
 
 
 def test_MolToRDKitDescriptors():

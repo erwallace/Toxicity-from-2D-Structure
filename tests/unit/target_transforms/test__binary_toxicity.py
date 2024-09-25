@@ -1,4 +1,4 @@
-from src.target_transforms import BinaryToxicity
+from toxic2d.target_transforms import BinaryToxicity
 import pytest
 
 

@@ -22,3 +22,12 @@
 - [ ] gitignore
 - [ ] pyproject.yaml
 - [ ] CI pipeline
+
+# Setup
+
+## Install
+```
+conda env create -f env.yml
+conda activate toxic2d
+pre-commit install
+```

@@ -1,4 +1,4 @@
-from src.transforms import SMILESToMol
+from toxic2d.transforms import SMILESToMol
 from rdkit import Chem
 
 
