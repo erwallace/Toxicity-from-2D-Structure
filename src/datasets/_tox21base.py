@@ -15,7 +15,7 @@ class Tox21Base(Dataset):
         return len(self.data)
 
     def remove_nan(self) -> None:
-        self.data = self.data.dropna(subset="smiles")
+        self.data = self.data.dropna(subset="smiles", how="any")
         self.data = self.data.dropna(subset=TOXICITIES, how="all")
         self.data = self.data.reset_index(drop=True)
         self.data = self.data.fillna(0)

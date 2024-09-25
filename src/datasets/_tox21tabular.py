@@ -12,13 +12,12 @@ class Tox21Tabular(Tox21Base):
         # ToDo: is there a better way of doing this? even with only 7,000 datapoints its slow
         # Apply transformations to the entire dataset if transform is provided
         if self.transform:
-            # ToDo: refactor these two lines.
-            self._features = (
-                self.data["smiles"].iloc[:].apply(lambda smile: self.transform(smile))
-            )
-            self._features = torch.stack(self._features.to_list()).numpy()
+            transformed_smiles = [
+                self.transform(smile) for smile in self.data["smiles"]
+            ]
+            self._features = torch.stack(transformed_smiles).numpy()
         else:
-            self._features = self.data["smiles"].iloc[:].values
+            self._features = self.data["smiles"].values
         # Fit and transform the data using StandardScaler
         nan_indices = np.where(np.isnan(self._features).any(axis=1))[0]
         self.scaler = StandardScaler().fit(self._features[~nan_indices])
