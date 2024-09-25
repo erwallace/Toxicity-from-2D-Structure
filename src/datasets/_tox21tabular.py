@@ -38,14 +38,12 @@ class Tox21Tabular(Tox21Base):
                 self.transform(smile) for smile in self.data["smiles"]
             ]
             self.transformed_features = torch.stack(transformed_smiles).numpy()
-        else:
-            self.transformed_features = self.data["smiles"].values
 
-        nan_idxs = np.where(np.isnan(self.transformed_features).any(axis=1))[0]
-        self.scaler = StandardScaler().fit(self.transformed_features[~nan_idxs])
+            nan_idxs = np.where(np.isnan(self.transformed_features).any(axis=1))[0]
+            self.scaler = StandardScaler().fit(self.transformed_features[~nan_idxs])
 
-        print(f"Removing {len(nan_idxs)} NaN rows from the dataset")
-        self.data = self.data.drop(nan_idxs).reset_index(drop=True)
+            print(f"Removing {len(nan_idxs)} NaN rows from the dataset")
+            self.data = self.data.drop(nan_idxs).reset_index(drop=True)
 
     def scaler_transform(self, features):
         """Uses sklearn scaler to transform data. Must be called after scale_fit."""
