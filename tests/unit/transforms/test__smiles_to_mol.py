@@ -3,7 +3,7 @@ from rdkit import Chem
 
 
 def test_SMILESToMol():
-    sample = tuple(["COC", None])
-    transformed = SMILESToMol().__call__(sample)
+    smile = "CCO"
+    transformed = SMILESToMol().__call__(smile)
 
-    assert isinstance(transformed[0], Chem.Mol)
+    assert isinstance(transformed, Chem.Mol)

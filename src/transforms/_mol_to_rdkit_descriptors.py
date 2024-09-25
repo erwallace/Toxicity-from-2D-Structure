@@ -1,13 +1,10 @@
 import torch
 from rdkit import Chem
-from typing import Any
-import numpy as np
 from rdkit.Chem import Descriptors
 
 
 class MolToRDKitDescriptors:
-    def __call__(self, sample: tuple[Chem.Mol, Any]) -> tuple[np.array, Any]:
-        mol, toxicity = sample
+    def __call__(self, mol: Chem.Mol) -> torch.Tensor:
         funcs = [func for name, func in Descriptors.descList]
         desc = [func(mol) for func in funcs]
-        return torch.Tensor(desc), toxicity
+        return torch.Tensor(desc)

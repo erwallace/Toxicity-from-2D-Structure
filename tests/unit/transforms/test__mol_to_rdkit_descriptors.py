@@ -4,9 +4,9 @@ from src.transforms import MolToRDKitDescriptors
 
 
 def test_MolToRDKitDescriptors():
-    sample = tuple([Chem.MolFromSmiles("CCO"), 1])
-    transformed = MolToRDKitDescriptors().__call__(sample)
+    mol = Chem.MolFromSmiles("CCO")
+    transformed = MolToRDKitDescriptors().__call__(mol)
 
-    descriptors, toxicity = transformed
+    descriptors = transformed
     assert isinstance(descriptors, torch.Tensor)
     assert len(descriptors) == len(Chem.Descriptors.descList)

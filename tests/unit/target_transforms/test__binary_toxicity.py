@@ -10,7 +10,6 @@ import pytest
     ],
 )
 def test_BinaryToxicity(toxicity_array, binary_output):
-    sample = tuple(["smile", toxicity_array])
-    transformed = BinaryToxicity().__call__(sample)
+    transformed = BinaryToxicity().__call__(toxicity_array)
 
-    assert transformed[1] == binary_output
+    assert transformed == binary_output

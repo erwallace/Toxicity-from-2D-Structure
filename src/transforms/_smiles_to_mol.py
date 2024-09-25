@@ -3,6 +3,5 @@ from typing import Any
 
 
 class SMILESToMol:
-    def __call__(self, sample: tuple[str, Any]) -> tuple[Chem.Mol, Any]:
-        smile, toxicity = sample
-        return Chem.MolFromSmiles(smile), toxicity
+    def __call__(self, feature: str) -> tuple[Chem.Mol, Any]:
+        return Chem.MolFromSmiles(feature)

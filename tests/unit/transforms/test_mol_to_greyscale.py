@@ -13,8 +13,8 @@ def test_mol_to_greyscale_valid_molecule():
 
 
 def test_MolToGreyscale():
-    sample = tuple([Chem.MolFromSmiles("COC"), None])
-    transformed = MolToGreyscale(embed=20, res=0.5).__call__(sample)
+    mol = Chem.MolFromSmiles("CCO")
+    transformed = MolToGreyscale(embed=20, res=0.5).__call__(mol)
 
-    assert transformed[0].shape == (80, 80, 1)
-    assert isinstance(transformed[0], np.ndarray)
+    assert isinstance(transformed, np.ndarray)
+    assert transformed.shape == (80, 80, 1)

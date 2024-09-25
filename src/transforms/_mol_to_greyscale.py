@@ -1,7 +1,6 @@
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem import AllChem
-from typing import Any
 
 
 class MolToGreyscale:
@@ -9,9 +8,8 @@ class MolToGreyscale:
         self.embed = embed
         self.res = res
 
-    def __call__(self, sample: tuple[Chem.Mol, Any]) -> tuple[np.array, Any]:
-        mol, toxicity = sample
-        return mol_to_greyscale(mol, self.embed, self.res), toxicity
+    def __call__(self, mol: Chem.Mol) -> np.array:
+        return mol_to_greyscale(mol, self.embed, self.res)
 
 
 def mol_to_greyscale(mol: Chem.Mol, embed: float = 20.0, res: float = 0.5) -> np.array:
