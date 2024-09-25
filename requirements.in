@@ -1,0 +1,10 @@
+torch
+torchvision
+matplotlib
+seaborn
+jupyter
+numpy
+pandas
+scikit-learn
+hydra-core
+omegaconf

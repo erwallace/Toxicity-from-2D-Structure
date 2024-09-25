@@ -27,7 +27,7 @@
 
 ## Install
 ```
-conda env create -f env.yml
+conda env create -f env.yaml
 conda activate toxic2d
 pre-commit install
 ```
