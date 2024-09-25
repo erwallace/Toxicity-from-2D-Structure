@@ -2,6 +2,7 @@
 - [ ] **Normalising Tabular Data**: currently handled by Tox21Tabular, however this requires featuring the entire dataset first to the fit the scaler.
 - [ ] **Handling Missing Data**: (similar to above) currently handled by Tox21Tabular, however this requires featuring the entire dataset first to find nan values and remove them.
 - [ ] **Cache Validation Dataloader**: currently the validation dataloader is recreated each time the model is validated. This is inefficient and should be cached.
+- [ ] **Local Imports** is there a better way to deal with local imports than installing an editable version?
 
 ## v0.1 To Do:
 - [ ] sklearn models:
@@ -18,9 +19,9 @@
 ## General Engineering:
 - [ ] add logging to the project.
 - [ ] version_log.md
-- [ ] requirements.in
-- [ ] gitignore
-- [ ] pyproject.yaml
+- [x] requirements.in
+- [x] gitignore
+- [x] pyproject.yaml
 - [ ] CI pipeline
 
 # Setup
@@ -29,5 +30,6 @@
 ```
 conda env create -f env.yaml
 conda activate toxic2d
+pip install -e .
 pre-commit install
 ```
