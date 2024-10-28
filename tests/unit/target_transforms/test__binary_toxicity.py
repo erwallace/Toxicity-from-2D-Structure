@@ -1,5 +1,6 @@
-from toxic2d.target_transforms import BinaryToxicity
 import pytest
+
+from toxic2d.target_transforms import BinaryToxicity
 
 
 @pytest.mark.parametrize(

@@ -1,5 +1,6 @@
-from toxic2d.transforms import SMILESToMol
 from rdkit import Chem
+
+from toxic2d.transforms import SMILESToMol
 
 
 def test_SMILESToMol():

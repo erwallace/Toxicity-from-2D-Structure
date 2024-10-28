@@ -35,6 +35,4 @@ def plot_greyscale(arr: np.array):
             greyscale(arr[i, :])
 
     else:
-        raise ValueError(
-            f"The array has {arr.ndim} dimensions ({arr.shape}). Must have 3 or 4."
-        )
+        raise ValueError(f"The array has {arr.ndim} dimensions ({arr.shape}). Must have 3 or 4.")

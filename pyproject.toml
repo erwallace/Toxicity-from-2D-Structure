@@ -18,3 +18,17 @@ dev = {file = ["requirements-dev.in"]}
 [tool.pytest.ini_options]
 minversion = "6.0"
 testpaths = ['tests']
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle
+    "F", # pyflakes
+    "I", # isort
+    "UP", # pyupgrade
+]
+
+[tool.ruff.lint.isort]
+known-third-party = ["wandb"]
+
+[tool.ruff]
+line-length = 100
