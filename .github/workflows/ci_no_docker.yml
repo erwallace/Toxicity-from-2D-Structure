@@ -14,8 +14,6 @@ permissions:
 
 jobs:
 
-steps:
-
   build-env:
     runs-on: ubuntu-latest
     steps:
