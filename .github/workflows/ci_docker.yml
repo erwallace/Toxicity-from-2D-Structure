@@ -81,7 +81,7 @@ jobs:
 
   linting:
     runs-on: ubuntu-latest
-    container: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+    container: ghcr.io/erwallace/toxic-2d:sha256-ca6403345392097fa1400d517972f3e70d3c8f08d5cceac7a951d398045fad95
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
