@@ -1,3 +1,4 @@
+from ._concatenate import Concatenate
 from ._mol_to_greyscale import MolToGreyscale
 from ._mol_to_morgan_fingerprints import MolToMorganFingerprints
 from ._mol_to_rdkit_descriptors import MolToRDKitDescriptors
@@ -8,4 +9,5 @@ __all__ = [
     "MolToGreyscale",
     "MolToRDKitDescriptors",
     "MolToMorganFingerprints",
+    "Concatenate",
 ]
