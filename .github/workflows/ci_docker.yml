@@ -18,31 +18,31 @@ env:
 
 jobs:
 
-    # paths-filter:
-    #   runs-on: ubuntu-latest
-    #   outputs:
-    #     rebuild: ${{ steps.filter.outputs.file-change }}
-    #   steps:
-    #   - uses: actions/checkout@v4
-    #   - uses: dorny/paths-filter@v3
-    #     id: filter
-    #     with:
-    #       filters: |
-    #         file-change:
-    #           - '.github/workflows/**'
-    #           - 'requirements*'
-    #           - 'Dockerfile'
-    #   # run only if relevant files were changed
-    #   - name: workflow tests
-    #     if: steps.filter.outputs.file-change == 'true'
-    #     run: echo "docker related files changed"
+  paths-filter:
+    runs-on: ubuntu-latest
+    outputs:
+      rebuild: ${{ steps.filter.outputs.file-change }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          file-change:
+            - '.github/workflows/**'
+            - 'requirements*'
+            - 'Dockerfile'
+    # run only if relevant files were changed
+    - name: test filter
+      if: steps.filter.outputs.file-change == 'true'
+      run: echo "docker related files changed"
 
   build-and-push-image:
     runs-on: ubuntu-latest
 
-    # # only rebuild docker if files have been changed
-    # needs: paths-filter
-    # if: steps.paths-filter.outputs.rebuild == 'true'
+    # only rebuild docker if files have been changed
+    needs: paths-filter
+    if: steps.paths-filter.outputs.rebuild == 'true'
 
     permissions:
       contents: read
