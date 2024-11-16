@@ -1,0 +1,95 @@
+# # This workflow will install Python dependencies, run tests and lint with a single version of Python
+# # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+# name: continuous integration with docker
+
+# on:
+#   push:
+#     branches: [ "master" ]
+#   pull_request:
+#     branches: [ "*" ]
+
+# permissions:
+#   contents: read
+
+# jobs:
+
+#     paths-filter:
+#       runs-on: ubuntu-latest
+#       outputs:
+#         rebuild: ${{ steps.filter.outputs.file-change }}
+#       steps:
+#       - uses: actions/checkout@v4
+#       - uses: dorny/paths-filter@v3
+#         id: filter
+#         with:
+#           filters: |
+#             file-change:
+#               - '.github/workflows/**'
+#               - 'requirements*'
+#               - 'Dockerfile'
+#       # run only if relevant files were changed
+#       - name: workflow tests
+#         if: steps.filter.outputs.file-change == 'true'
+#         run: echo "docker related files changed"
+
+#   build-docker:
+#     # only rebuild docker if files have been changed
+#     needs: paths-filter
+#     if: steps.paths-filter.outputs.rebuild == 'true'
+
+#   deploy-docker:
+#     # only deploy docker if files have been changed
+#     needs: paths-filter
+#     if: steps.paths-filter.outputs.rebuild == 'true'
+
+#   load-docker:
+#     # if no changes then load docker image
+#     needs: paths-filter
+#     if: steps.paths-filter.outputs.rebuild == 'false'
+
+#   unit-tests
+#   integration-tests
+#   linting
+
+#   build:
+
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - uses: actions/checkout@v4
+
+#     - name: Set up Python 3.11
+#       uses: actions/setup-python@v3
+#       with:
+#         python-version: "3.11"
+
+#     - name: Install dependencies
+#       run: |
+#         python -m pip install --upgrade pip
+#         pip install -r requirements.in
+#         pip install -r requirements-dev.in
+#         pip install -e .
+
+#     - name: Linting
+#       run: |
+#         pre-commit install
+#         pre-commit run --all-files
+
+#     - name: Unit Tests
+#       run: |
+#         pytest ./tests/unit/ --doctest-modules --junitxml=junit/unit-test-results.xml --cov=com --cov-report=xml --cov-report=html
+
+#     - name: Integration Tests
+#       run: |
+#         pytest ./tests/integration/ --doctest-modules --junitxml=junit/integration-test-results.xml --cov=com --cov-report=xml --cov-report=html
+
+#     - name: Upload Test Results
+#       uses: actions/upload-artifact@v4
+#       with:
+#         name: pytest-unit-test-results
+#         path: junit/unit-test-results.xml
+#       with:
+#         name: pytest-integration-test-results
+#         path: junit/integration-test-results.xml
+#       if: ${{ always() }}  # publish even when some tests fail
