@@ -23,6 +23,8 @@
 - [x] gitignore
 - [x] pyproject.yaml
 - [ ] CI pipeline
+  - [x] Workflow with GitHub Actions
+  - [ ] Move to Docker
 
 # Setup
 
