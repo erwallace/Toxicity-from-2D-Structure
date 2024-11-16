@@ -1,0 +1,58 @@
+stages:
+  - build
+  - test
+
+setup_venv:
+  stage: build
+  image: python:3.11
+  script:
+    - echo "Setting up environment..."
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install -e .[test]
+  artifacts:
+    paths:
+      - venv/
+
+unit_tests:
+  stage: test
+  image: python:3.11
+  tags:
+    - linux
+  script:
+    - source venv/bin/activate
+    - pytest ./tests/unit/
+    - pytest --junitxml=report.xml
+  artifacts:                       
+    when: always
+    reports:                      
+      junit: report.xml          
+  dependencies:
+    - setup_venv
+
+unit_tests:
+  stage: test
+  image: python:3.11
+  tags:
+    - linux
+  script:
+    - source venv/bin/activate
+    - pytest ./tests/integration/
+    - pytest --junitxml=report.xml
+  artifacts:                       
+    when: always
+    reports:                      
+      junit: report.xml          
+  dependencies:
+    - setup_venv
+
+linting:
+  stage: test
+  image: python:3.11
+  script:
+    - source venv/bin/activate
+    - pre-commit run --all-files
+  dependencies:
+    - setup_venv
+
+  
