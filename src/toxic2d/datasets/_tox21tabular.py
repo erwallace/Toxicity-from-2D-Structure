@@ -33,7 +33,7 @@ class Tox21Tabular(Tox21Base):
         nan rows that the transformations create and then fit the scaler to the
         transformed data.
         """
-        # ToDo: is there a better way of doing this? even with only 7,000 datapoints its slow
+        # TODO: is there a better way of doing this? even with only 7,000 datapoints its slow
         if self.transform:
             transformed_smiles = [self.transform(smile) for smile in self.data["smiles"]]
             self.transformed_features = torch.stack(transformed_smiles).numpy()
