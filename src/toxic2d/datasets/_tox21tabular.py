@@ -38,6 +38,9 @@ class Tox21Tabular(Tox21Base):
             transformed_smiles = [self.transform(smile) for smile in self.data["smiles"]]
             self.transformed_features = torch.stack(transformed_smiles).numpy()
 
+            # Replace np.inf with np.nan
+            self.transformed_features[np.isinf(self.transformed_features)] = np.nan
+
             nan_idxs = np.where(np.isnan(self.transformed_features).any(axis=1))[0]
             self.scaler = StandardScaler().fit(self.transformed_features[~nan_idxs])
 
