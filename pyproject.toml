@@ -29,11 +29,3 @@ select = [
 
 [tool.ruff]
 line-length = 100
-
-[project.optional-dependencies]
-test = [
-    'pytest',
-    'rdkit',
-    'numpy',
-    'matplotlib',
-]
