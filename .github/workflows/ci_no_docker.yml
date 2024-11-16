@@ -45,6 +45,7 @@ jobs:
         path: venv/
     - name: Linting
       run: |
+        pwd
         source venv/bin/activate
         pre-commit install
         pre-commit run --all-files
