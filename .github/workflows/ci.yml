@@ -39,8 +39,8 @@ jobs:
 
     - name: Unit Tests
       run: |
-        pytest ./tests/unit/
+        pytest ./tests/unit/ --doctest-modules --junitxml=junit/unit-test-results.xml --cov=com --cov-report=xml --cov-report=html
 
     - name: Integration Tests
       run: |
-        pytest ./tests/integration/
+        pytest ./tests/integration/ --doctest-modules --junitxml=junit/integration-test-results.xml --cov=com --cov-report=xml --cov-report=html
