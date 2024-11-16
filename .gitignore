@@ -8,3 +8,6 @@ build/
 .mypy_cache/
 .pytest_cache/
 .ruff_cache
+
+# toxic2d
+tensorflow/*

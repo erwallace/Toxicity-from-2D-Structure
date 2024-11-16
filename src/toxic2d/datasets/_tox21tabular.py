@@ -1,8 +1,9 @@
-from sklearn.preprocessing import StandardScaler
-from toxic2d.datasets import Tox21Base
-from toxic2d.constants import TOXICITIES
 import numpy as np
 import torch
+from sklearn.preprocessing import StandardScaler
+
+from toxic2d.constants import TOXICITIES
+from toxic2d.datasets import Tox21Base
 
 
 class Tox21Tabular(Tox21Base):
@@ -34,9 +35,7 @@ class Tox21Tabular(Tox21Base):
         """
         # ToDo: is there a better way of doing this? even with only 7,000 datapoints its slow
         if self.transform:
-            transformed_smiles = [
-                self.transform(smile) for smile in self.data["smiles"]
-            ]
+            transformed_smiles = [self.transform(smile) for smile in self.data["smiles"]]
             self.transformed_features = torch.stack(transformed_smiles).numpy()
 
             nan_idxs = np.where(np.isnan(self.transformed_features).any(axis=1))[0]
@@ -49,8 +48,6 @@ class Tox21Tabular(Tox21Base):
         """Uses sklearn scaler to transform data. Must be called after scale_fit."""
         if self.scaler is None:
             raise ValueError("Scaler has not been fit. Please run scaler_fit() first.")
-        features = self.scaler.transform(
-            features.reshape(1, -1)
-        )  # reshaped for a single sample
+        features = self.scaler.transform(features.reshape(1, -1))  # reshaped for a single sample
         features = torch.Tensor(features.flatten())
         return features
