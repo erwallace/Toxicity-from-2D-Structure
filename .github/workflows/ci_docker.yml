@@ -37,6 +37,9 @@ jobs:
   #     if: steps.filter.outputs.file-change == 'true'
   #     run: echo "docker related files changed"
 
+  # from https://docs.github.com/en/actions/use-cases-and-examples/publishing-packages/publishing-docker-images#publishing-images-to-github-packages
+  # successfully builds images. not sure how to access them though?
+
   # build-and-push-image:
   #   runs-on: ubuntu-latest
 
