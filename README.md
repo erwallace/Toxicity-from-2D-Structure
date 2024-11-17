@@ -1,5 +1,5 @@
 ## Questions
-- [ ] **Normalising Tabular Data**: currently handled by Tox21Tabular, however this requires featuring the entire dataset first to the fit the scaler.
+- [ ] **Normalising Tabular Data**: currently handled by Tox21Tabular, however this requires featuring the entire dataset first to the fit the scaler. This feature is also currently not working!
 - [ ] **Handling Missing Data**: (similar to above) currently handled by Tox21Tabular, however this requires featuring the entire dataset first to find nan values and remove them.
 - [ ] **Cache Validation Dataloader**: currently the validation dataloader is recreated each time the model is validated. This is inefficient and should be cached.
 - [ ] **Local Imports** is there a better way to deal with local imports than installing an editable version?
