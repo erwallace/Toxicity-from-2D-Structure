@@ -10,4 +10,4 @@ def test__tox21tabular(csv_path):
     tox21 = Tox21Base(csv_path=csv_path)
     assert len(tox21) == 7
 
-    assert tox21.data.isna().sum() == 0
+    assert tox21.data.isna().sum().sum() == 0
