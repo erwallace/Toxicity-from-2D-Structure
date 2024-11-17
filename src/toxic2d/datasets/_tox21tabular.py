@@ -55,15 +55,15 @@ class Tox21Tabular(Tox21Base):
             nan_idxs = np.where(np.isnan(self.transformed_features).any(axis=1))[0]
             self.transformed_features = self.transformed_features[~nan_idxs]
 
-            print(f"Removing {len(nan_idxs)} NaN rows from the dataset")
+            print(f"Removing {len(nan_idxs)} transformed NaN rows from the dataset")
             self.data = self.data.drop(nan_idxs).reset_index(drop=True)
 
     def scaler_fit(self):
-        """Fits the StandardScaler to the dataset. Must be called after remove_tranformed_nan."""
+        """Fits the StandardScaler to the dataset. Must be called after remove_tranformed_nan()."""
         self.scaler = StandardScaler().fit(self.transformed_features)
 
     def scaler_transform(self, features):
-        """Uses sklearn scaler to transform data. Must be called after scale_fit."""
+        """Uses sklearn scaler to transform data. Must be called after scaler_fit()."""
         if self.scaler is None:
             raise ValueError("Scaler has not been fit. Please run scaler_fit() first.")
         features = self.scaler.transform(features.reshape(1, -1))  # reshaped for a single sample
