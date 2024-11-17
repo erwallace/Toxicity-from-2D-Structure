@@ -1,3 +1,5 @@
+from collections.abc import Callable
+
 import numpy as np
 import torch
 from sklearn.preprocessing import StandardScaler
@@ -10,8 +12,8 @@ class Tox21Tabular(Tox21Base):
     def __init__(
         self,
         csv_path: str,
-        transform: list = [],
-        target_transform: list = [],
+        transform: Callable | None = None,
+        target_transform: Callable | None = None,
         scaling: bool = True,
         remove_tranformed_nan: bool = True,
     ):
