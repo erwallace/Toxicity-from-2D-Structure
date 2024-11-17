@@ -17,6 +17,7 @@ class Tox21Tabular(Tox21Base):
     ):
         super().__init__(csv_path, transform, target_transform)
         self.transformed_features = None
+        self.scaling = scaling
 
         if scaling and not remove_tranformed_nan:
             raise ValueError("NaN removal must be enabled when scaling is enabled.")
@@ -24,7 +25,7 @@ class Tox21Tabular(Tox21Base):
         if remove_tranformed_nan:
             self.remove_tranformed_nan()
 
-        if scaling:
+        if self.scaling:
             self.scaler = None
             self.scaler_fit()
 
