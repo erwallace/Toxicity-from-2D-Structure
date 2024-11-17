@@ -8,3 +8,5 @@ pandas
 scikit-learn
 hydra-core
 omegaconf
+xgboost
+rdkit

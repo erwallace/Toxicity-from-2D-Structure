@@ -1,3 +1,5 @@
+from collections.abc import Callable
+
 import pandas as pd
 from torch.utils.data import Dataset
 
@@ -5,7 +7,12 @@ from toxic2d.constants import TOXICITIES
 
 
 class Tox21Base(Dataset):
-    def __init__(self, csv_path, transform=None, target_transform=None):
+    def __init__(
+        self,
+        csv_path: str,
+        transform: Callable | None = None,
+        target_transform: Callable | None = None,
+    ):
         self.data = pd.read_csv(csv_path)
         self.remove_nan()
 

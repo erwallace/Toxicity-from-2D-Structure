@@ -1,3 +1,5 @@
+from collections.abc import Callable
+
 from PIL import Image
 from torchvision import transforms
 
@@ -5,7 +7,7 @@ from toxic2d.datasets import Tox21Base
 
 
 class Tox21Images(Tox21Base):
-    def __init__(self, csv_path, transform=None):
+    def __init__(self, csv_path: str, transform: Callable | None = None):
         super().__init__(csv_path, transform)
         self.image_transform = transforms.Compose(
             [
