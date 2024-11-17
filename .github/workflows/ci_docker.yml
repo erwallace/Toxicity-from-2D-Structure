@@ -1,0 +1,127 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: continuous integration with docker
+
+on:
+  push:
+    branches: [ "docker_ci" ]
+  pull_request:
+    branches: [ "*" ]
+
+permissions:
+  contents: read
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+
+  # paths-filter:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     rebuild: ${{ steps.filter.outputs.file-change }}
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #   - uses: dorny/paths-filter@v3
+  #     id: filter
+  #     with:
+  #       filters: |
+  #         file-change:
+  #           - '.github/workflows/**'
+  #           - 'requirements*'
+  #           - 'Dockerfile'
+  #   # run only if relevant files were changed
+  #   - name: test filter
+  #     if: steps.filter.outputs.file-change == 'true'
+  #     run: echo "docker related files changed"
+
+  # from https://docs.github.com/en/actions/use-cases-and-examples/publishing-packages/publishing-docker-images#publishing-images-to-github-packages
+  # successfully builds images. not sure how to access them though?
+
+  # build-and-push-image:
+  #   runs-on: ubuntu-latest
+
+  #   # # only rebuild docker if files have been changed
+  #   # needs: paths-filter
+  #   # if: steps.paths-filter.outputs.rebuild == 'true'
+
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #     attestations: write
+  #     id-token: write
+
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+  #     - name: Log in to the Container registry
+  #       uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+  #       with:
+  #         registry: ${{ env.REGISTRY }}
+  #         username: ${{ github.actor }}
+  #         password: ${{ secrets.TOXIC2D_ACTIONS_TOKEN }}
+  #     - name: Extract metadata (tags, labels) for Docker
+  #       id: meta
+  #       uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+  #       with:
+  #         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+  #     - name: Build and push Docker image
+  #       id: push
+  #       uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+  #       with:
+  #         context: .
+  #         push: true
+  #         tags: ${{ steps.meta.outputs.tags }}
+  #         labels: ${{ steps.meta.outputs.labels }}
+  #     - name: Generate artifact attestation
+  #       uses: actions/attest-build-provenance@v1
+  #       with:
+  #         subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+  #         subject-digest: ${{ steps.push.outputs.digest }}
+  #         push-to-registry: true
+
+  linting:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    container: ghcr.io/erwallace/toxic-2d:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+      - name: Linting
+        run: |
+          pre-commit install
+          pre-commit run --all-files
+
+
+  # unit-tests
+  # integration-tests
+  # linting
+
+
+  #   - name: Unit Tests
+  #     run: |
+  #       pytest ./tests/unit/ --doctest-modules --junitxml=junit/unit-test-results.xml --cov=com --cov-report=xml --cov-report=html
+
+  #   - name: Integration Tests
+  #     run: |
+  #       pytest ./tests/integration/ --doctest-modules --junitxml=junit/integration-test-results.xml --cov=com --cov-report=xml --cov-report=html
+
+  #   - name: Upload Test Results
+  #     uses: actions/upload-artifact@v4
+  #     with:
+  #       name: pytest-unit-test-results
+  #       path: junit/unit-test-results.xml
+  #     with:
+  #       name: pytest-integration-test-results
+  #       path: junit/integration-test-results.xml
+  #     if: ${{ always() }}  # publish even when some tests fail

@@ -1,0 +1,103 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: continuous integration
+
+on:
+  push:
+    branches: [ "master" ]
+  # pull_request:
+  #   branches: [ "*" ]
+
+permissions:
+  contents: read
+
+jobs:
+
+  build-env:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+    - name: Restore cached virtualenv
+      uses: actions/cache/restore@v4
+      with:
+        key: venv-toxic2d
+        path: .venv
+    - name: Install dependencies
+      run: |
+        python -m venv .venv
+        source .venv/bin/activate
+        pip install -r requirements.in
+        pip install -r requirements-dev.in
+        pip install -e .
+        echo "$VIRTUAL_ENV/bin" >> $GITHUB_PATH
+        echo "VIRTUAL_ENV=$VIRTUAL_ENV" >> $GITHUB_ENV
+    - name: Saved cached virtualenv
+      uses: actions/cache/save@v4
+      with:
+        key: venv-toxic2d
+        path: .venv
+
+  linting:
+    needs: build-env
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+    - name: Restore cached virtualenv
+      uses: actions/cache/restore@v4
+      with:
+        key: venv-toxic2d
+        path: .venv
+    - name: Activate venv and run pre-commit
+      run: source venv/bin/activate
+    - name: Linting
+      run: |
+        pre-commit install
+        pre-commit run --all-files
+
+  unit-tests:
+    needs: build-env
+    runs-on: ubuntu-latest
+    steps:
+    - name: Restore cached virtualenv
+      uses: actions/cache/restore@v4
+      with:
+        key: venv-toxic2d
+        path: .venv
+    - name: Unit Tests
+      run: |
+        source venv/bin/activate
+        pytest ./tests/unit/ --doctest-modules --junitxml=junit/unit-test-results.xml --cov=com --cov-report=xml --cov-report=html
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: pytest-unit-test-results
+        path: junit/unit-test-results.xml
+      if: ${{ always() }}  # publish even when some tests fail
+
+  integration-tests:
+    needs: build-env
+    runs-on: ubuntu-latest
+    steps:
+    - name: Restore cached virtualenv
+      uses: actions/cache/restore@v4
+      with:
+        key: venv-toxic2d
+        path: .venv
+    - name: Integration Tests
+      run: |
+        source venv/bin/activate
+        pytest ./tests/integration/ --doctest-modules --junitxml=junit/integration-test-results.xml --cov=com --cov-report=xml --cov-report=html
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: pytest-integration-test-results
+        path: junit/integration-test-results.xml
+      if: ${{ always() }}  # publish even when some tests fail
