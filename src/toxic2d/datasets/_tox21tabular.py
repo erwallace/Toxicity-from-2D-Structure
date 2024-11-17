@@ -21,9 +21,6 @@ class Tox21Tabular(Tox21Base):
         self.transformed_features = None
         self.scaling = scaling
 
-        if scaling and not remove_tranformed_nan:
-            raise ValueError("NaN removal must be enabled when scaling is enabled.")
-
         if remove_tranformed_nan:
             self.remove_tranformed_nan()
 
@@ -55,19 +52,27 @@ class Tox21Tabular(Tox21Base):
             # Replace remove np.inf and np.nan rows
             self.transformed_features[np.isinf(self.transformed_features)] = np.nan
             nan_idxs = np.where(np.isnan(self.transformed_features).any(axis=1))[0]
-            self.transformed_features = self.transformed_features[~nan_idxs]
+            mask = ~np.isin(np.arange(self.transformed_features.shape[0]), nan_idxs)
+            self.transformed_features = self.transformed_features[mask]
 
             print(f"Removing {len(nan_idxs)} transformed NaN rows from the dataset")
             self.data = self.data.drop(nan_idxs).reset_index(drop=True)
 
     def scaler_fit(self):
         """Fits the StandardScaler to the dataset. Must be called after remove_tranformed_nan()."""
+        if self.transformed_features is None:
+            raise ValueError(
+                "Transformed features have not been calculated. Set remove_tranformed_nan = True "
+                "to run remove_tranformed_nan() first."
+            )
         self.scaler = StandardScaler().fit(self.transformed_features)
 
     def scaler_transform(self, features):
         """Uses sklearn scaler to transform data. Must be called after scaler_fit()."""
         if self.scaler is None:
-            raise ValueError("Scaler has not been fit. Please run scaler_fit() first.")
-        features = self.scaler.transform(features.reshape(1, -1))  # reshaped for a single sample
-        features = torch.Tensor(features.flatten())
+            raise ValueError(
+                "Scaler has not been fit. Set scaling = True to run scaler_fit() first."
+            )
+        features = self.scaler.transform(features.reshape(1, -1))  # reshaped from (n,) to (n,1)
+        features = torch.Tensor(features.flatten())  # flattens back to (n,)
         return features
